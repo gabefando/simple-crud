@@ -1,5 +1,7 @@
 import './App.css';
 import { useState } from "react";
+import Axios from 'axios'
+import axios from 'axios';
 
 function App() {
   const [name, setName] = useState('');
@@ -8,6 +10,19 @@ function App() {
   const [type, setService] = useState('');
   const [price, setPrice] = useState(0);
   const [desc, setDesc] = useState('');
+
+  const addClient = () => {
+    Axios.post('http://localhost:3001/create',{
+      name: name,
+      phone: phone,
+      address: address,
+      type: type,
+      price: price,
+      desc: desc
+    }).then(() => {
+      console.log("success");
+    });
+  };
 
   const displayInfo = () => {
     console.log(name + phone + address + type + price + desc);
@@ -50,7 +65,7 @@ function App() {
               setDesc(event.target.value);
             }}
           />
-        <button onClick={displayInfo}>Add Client</button>
+        <button onClick={addClient}>Add Client</button>
       </div>
   </div>
   );
