@@ -11,6 +11,8 @@ function App() {
   const [price, setPrice] = useState(0);
   const [desc, setDesc] = useState('');
 
+  const [clientList, setClientList] = useState([]);
+
   const addClient = () => {
     Axios.post('http://localhost:3001/create',{
       name: name,
@@ -24,9 +26,12 @@ function App() {
     });
   };
 
-  const displayInfo = () => {
-    console.log(name + phone + address + type + price + desc);
-  };
+const getClients = () => {
+  Axios.get('http://localhost:3001/clients',).then((response) => {
+      setClientList(response.data)
+    });
+}
+
   return (
     <div className="App">
       <div className='information'>
@@ -66,6 +71,22 @@ function App() {
             }}
           />
         <button onClick={addClient}>Add Client</button>
+      </div>
+      <div className='clients'>
+        <button onClick={getClients}>Show All Clients</button>
+
+        {clientList.map((val, key) => {
+          return (
+            <div className='client'>
+              <h3>Name: {val.name}</h3>
+              <h3>Tel: {val.phone}</h3>
+              <h3>Address: {val.address}</h3>
+              <h3>Type: {val.serviceType}</h3>
+              <h3>Price: {val.price}$</h3>
+              <h3>Description: {val.serviceDesc}</h3>
+            </div>
+          )
+        })}
       </div>
   </div>
   );
